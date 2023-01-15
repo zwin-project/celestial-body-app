@@ -23,8 +23,8 @@ class CelestialBody final : public zukou::IBoundedDelegate,
 
     bounded_.SetTitle(name);
 
-    region_.AddCuboid(glm::vec3(radius), glm::vec3(0), glm::quat(glm::vec3(0)));
-    bounded_.SetRegion(&region_);
+    // region_.AddCuboid(glm::vec3(radius), glm::vec3(0), glm::quat(glm::vec3(0)));
+    // bounded_.SetRegion(&region_);
 
     auto jpeg_texture = std::make_unique<JpegTexture>(&system_);
 
@@ -48,7 +48,20 @@ class CelestialBody final : public zukou::IBoundedDelegate,
     bounded_.Commit();
   }
 
+  // Implement the content of the function.
   void RayAxisFrame(const zukou::RayAxisEvent& /*event*/) override {}
+  // void RayAxisFrame(const zukou::RayAxisEvent& event) override
+  // {
+  //   spin_angle_ += event.vertical;
+  //   spin_angle_ %= 360;
+
+  //   float theta = 2.0 * M_PI * spin_angle_ / 360.0;
+
+  //   glm::mat4 transform = glm::rotate(glm::mat4(1), theta, glm::vec3(0, 1, 0));
+  //   sphere_.Update(transform);
+
+  //   bounded_.Commit();
+  // }
 
   void Frame(uint32_t /*time*/) override {}
 
@@ -58,6 +71,7 @@ class CelestialBody final : public zukou::IBoundedDelegate,
   zukou::Region region_;
 
   const char* texture_path_;
+  // int spin_angle_ = 0; // Add this line.
 
   Sphere sphere_;
 };
@@ -65,6 +79,8 @@ class CelestialBody final : public zukou::IBoundedDelegate,
 int
 main(void)
 {
+  // std::string path("./assets/earth.jpg");
+  // std::string name("Earth");
   std::string path("./assets/moon.jpg");
   std::string name("Moon");
   CelestialBody celestial_body(path.c_str());
